@@ -29,7 +29,7 @@ class CustomDateInput extends StatefulWidget {
 class _CustomDateInputState extends State<CustomDateInput> {
   final _startController = TextEditingController();
   final _endController = TextEditingController();
-  final _dateFormat = DateFormat('YYYY-MM-DD');
+  final _dateFormat = DateFormat('yyyy-MM-dd');
   final FocusNode _startFocusNode = FocusNode();
   final FocusNode _endFocusNode = FocusNode();
 
@@ -128,7 +128,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
                 controller: _startController,
                 decoration: InputDecoration(
                   labelText: widget.startLabelText,
-                  hintText: _dateFormat.pattern,
+                  hintText: 'YYYY-MM-DD',
                   focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey),
                   ),
@@ -162,7 +162,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
                   enabledBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey),
                   ),
-                  hintText: _dateFormat.pattern,
+                  hintText: 'YYYY-MM-DD',
                   labelStyle: TextStyle(
                     color: _endFocusNode.hasFocus ? Colors.black : Colors.grey,
                   ),
