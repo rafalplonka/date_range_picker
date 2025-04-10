@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_date_range_picker/flutter_date_range_picker.dart';
+import 'package:flutter_date_range_picker/src/widgets/custom_date_input.dart';
 
 /// The default [CalendarTheme] used by the date range picker.
 const CalendarTheme kTheme = CalendarTheme(
@@ -55,9 +56,9 @@ Widget kDayTileBuilder(
     onTap: dayModel.isSelectable ? onTap : null,
     radius: BorderRadius.horizontal(
       left: Radius.circular(
-          dayModel.isEnd && dayModel.isInRange ? 0 : theme.radius),
+          theme.radius),
       right: Radius.circular(
-          dayModel.isStart && dayModel.isInRange ? 0 : theme.radius),
+         theme.radius),
     ),
     backgroundRadius: BorderRadius.horizontal(
       left: Radius.circular(dayModel.isStart ? theme.radius : 0),
@@ -72,16 +73,19 @@ class DayNamesRow extends StatelessWidget {
   ///
   /// * [key] - The [Key] for this widget.
   /// * [textStyle] - The style to apply to the day names text.
+  /// * [locale] - The locale to use for the day names.
   /// * [weekDays] - The names of the days of the week to display. If null, defaults to the default week days.
   DayNamesRow({
     Key? key,
     required this.textStyle,
+    required this.locale,
     List<String>? weekDays,
-  })  : weekDays = weekDays ?? defaultWeekDays(),
+  })  : weekDays = weekDays ?? defaultWeekDays(locale: locale.toString()),
         super(key: key);
 
   final TextStyle textStyle;
   final List<String> weekDays;
+  final Locale locale;
 
   @override
   Widget build(BuildContext context) {
@@ -136,10 +140,11 @@ class DateRangePickerWidget extends StatefulWidget {
     this.disabledDates = const [],
     this.quickDateRanges = const [],
     this.doubleMonth = true,
-    this.height = 330,
+    this.height = 410,
     this.displayMonthsSeparator = true,
     this.separatorThickness = 1,
     this.allowSingleTapDaySelection = false,
+    this.showCustomDateInput = true,
   }) : super(key: key);
 
   /// Called whenever the selected date range is changed.
@@ -189,6 +194,9 @@ class DateRangePickerWidget extends StatefulWidget {
   /// Thickness of the vertical separator between months if [doubleMonth] mode is active
   final double separatorThickness;
 
+  /// Whether to show the custom date input fields above the calendar
+  final bool showCustomDateInput;
+
   @override
   State<DateRangePickerWidget> createState() => DateRangePickerWidgetState();
 }
@@ -234,6 +242,19 @@ class DateRangePickerWidgetState extends State<DateRangePickerWidget> {
     Widget child = Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        if (widget.showCustomDateInput)
+          CustomDateInput(
+            minDate: widget.minDate,
+            maxDate: widget.maxDate,
+            onDateRangeChanged: (dateRange) {
+              if (dateRange != null) {
+                calendarController.setDateRange(dateRange);
+              }
+            },
+            dateRange: controller.dateRange ??
+                DateRange(DateTime.now(), DateTime.now()),
+            theme: widget.theme,
+          ),
         SizedBox(
           width: widget.theme.tileSize * 7 * (widget.doubleMonth ? 2 : 1),
           child: MonthSelectorAndDoubleIndicator(
@@ -351,6 +372,7 @@ class EnrichedMonthWrapWidget extends StatelessWidget {
         children: [
           DayNamesRow(
             textStyle: theme.dayNameTextStyle,
+            locale: Localizations.localeOf(context),
           ),
           const SizedBox(height: 16),
           MonthWrapWidget(

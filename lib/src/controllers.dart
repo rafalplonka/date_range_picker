@@ -71,11 +71,17 @@ class RangePickerController {
         onDateRangeChanged(DateRange(startDate!, endDate!));
       }
     } else {
-      startDate = date;
-      endDate = null;
-      if (allowSingleTapDaySelection) {
-        onDateRangeChanged(DateRange(startDate!, startDate!));
+      if (allowSingleTapDaySelection && startDate != endDate) {
+        startDate = date;
+        endDate = date;
+      } else {
+        if (date.isBefore(startDate!)) {
+          startDate = date;
+        } else {
+          endDate = date;
+        }
       }
+      onDateRangeChanged(DateRange(startDate!, endDate!));
     }
   }
 
@@ -252,15 +258,10 @@ class CalendarWidgetController {
     return controller.retrieveDeltaForMonth(nextMonth);
   }
 
+  /// Sets the date range and updates the current month to show the start date
   void setDateRange(DateRange? dateRange) {
-    _streamController.add(null);
-
-    if (dateRange == null) {
-      controller.onDateRangeChangedExternally(null);
-      return;
-    }
-
     controller.onDateRangeChangedExternally(dateRange);
-    currentMonth = dateRange.start;
+    currentMonth = dateRange?.start ?? DateTime.now();
+    _streamController.add(null);
   }
 }

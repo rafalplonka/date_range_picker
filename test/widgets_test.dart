@@ -8,11 +8,14 @@ void main() {
         (WidgetTester tester) async {
       await tester.pumpWidget(MaterialApp(
         home: Scaffold(
-          body: DayNamesRow(textStyle: kTheme.dayNameTextStyle),
+          body: DayNamesRow(
+            textStyle: kTheme.dayNameTextStyle,
+            locale: const Locale('en'),
+          ),
         ),
       ));
 
-      for (var day in defaultWeekDays()) {
+      for (var day in defaultWeekDays(locale: 'en')) {
         expect(find.text(day), findsOneWidget);
       }
     });

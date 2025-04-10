@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_date_range_picker/flutter_date_range_picker.dart';
 import 'package:flutter/material.dart';
 
@@ -242,13 +241,10 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ],
-        minimumDateRangeLength: 3,
-        initialDateRange: selectedDateRange,
-        disabledDates: [DateTime(2023, 11, 20)],
-        initialDisplayedDate:
-            selectedDateRange?.start ?? DateTime(2023, 11, 20),
+        initialDateRange:
+            DateRange(DateTime(2023, 11, 20), DateTime(2023, 11, 23)),
         onDateRangeChanged: onDateRangeChanged,
-        height: 350,
+        allowSingleTapDaySelection: true,
         theme: const CalendarTheme(
           selectedColor: Colors.blue,
           dayNameTextStyle: TextStyle(color: Colors.black45, fontSize: 10),
