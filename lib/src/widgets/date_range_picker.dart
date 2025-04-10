@@ -145,6 +145,8 @@ class DateRangePickerWidget extends StatefulWidget {
     this.separatorThickness = 1,
     this.allowSingleTapDaySelection = false,
     this.showCustomDateInput = true,
+    this.startLabelText = 'Start Date',
+    this.endLabelText = 'End Date',
   }) : super(key: key);
 
   /// Called whenever the selected date range is changed.
@@ -197,6 +199,12 @@ class DateRangePickerWidget extends StatefulWidget {
   /// Whether to show the custom date input fields above the calendar
   final bool showCustomDateInput;
 
+  /// The label text for the start date input field
+  final String startLabelText;
+
+  /// The label text for the end date input field
+  final String endLabelText;
+
   @override
   State<DateRangePickerWidget> createState() => DateRangePickerWidgetState();
 }
@@ -246,6 +254,8 @@ class DateRangePickerWidgetState extends State<DateRangePickerWidget> {
           CustomDateInput(
             minDate: widget.minDate,
             maxDate: widget.maxDate,
+            startLabelText: widget.startLabelText,
+            endLabelText: widget.endLabelText,
             onDateRangeChanged: (dateRange) {
               if (dateRange != null) {
                 calendarController.setDateRange(dateRange);

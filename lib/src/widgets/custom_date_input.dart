@@ -8,6 +8,8 @@ class CustomDateInput extends StatefulWidget {
     required this.onDateRangeChanged,
     required this.dateRange,
     required this.theme,
+    required this.startLabelText,
+    required this.endLabelText,
     this.minDate,
     this.maxDate,
   }) : super(key: key);
@@ -15,6 +17,8 @@ class CustomDateInput extends StatefulWidget {
   final ValueChanged<DateRange?> onDateRangeChanged;
   final DateRange dateRange;
   final CalendarTheme theme;
+  final String startLabelText;
+  final String endLabelText;
   final DateTime? minDate;
   final DateTime? maxDate;
 
@@ -25,7 +29,7 @@ class CustomDateInput extends StatefulWidget {
 class _CustomDateInputState extends State<CustomDateInput> {
   final _startController = TextEditingController();
   final _endController = TextEditingController();
-  final _dateFormat = DateFormat('yyyy-MM-dd');
+  final _dateFormat = DateFormat('YYYY-MM-DD');
   final FocusNode _startFocusNode = FocusNode();
   final FocusNode _endFocusNode = FocusNode();
 
@@ -123,7 +127,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
                 focusNode: _startFocusNode,
                 controller: _startController,
                 decoration: InputDecoration(
-                  labelText: 'Start Date',
+                  labelText: widget.startLabelText,
                   hintText: _dateFormat.pattern,
                   focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.grey),
@@ -151,7 +155,7 @@ class _CustomDateInputState extends State<CustomDateInput> {
                 focusNode: _endFocusNode,
                 controller: _endController,
                 decoration: InputDecoration(
-                  labelText: 'End Date',
+                  labelText: widget.endLabelText,
                   focusedBorder: const OutlineInputBorder(
                     borderSide: BorderSide(color: Colors.black),
                   ),
